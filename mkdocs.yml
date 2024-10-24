@@ -1,0 +1,36 @@
+nav:
+  - 主页: 'index.md'
+  - 目录:
+    - 简介: 'intro.md'
+    - 凸包:
+      - 三维凸包: '01 Getting started/3DConvexHull.md'
+    - TODO:
+      - TODO: '02 TODO'
+  - 代码仓库: 'code_repo.md'
+
+site_name: 'geometry algorithms'
+
+site_description: '计算几何算法'
+
+site_url: https://hashixuehua.github.io/geometry/
+
+repo_url: https://github.com/hashixuehua/geometry
+
+markdown_extensions:
+  - admonition
+  - smarty
+  - sane_lists
+  - mdx_math
+
+extra_javascript:
+  - 'mathjax/MathJax.js?config=TeX-AMS_HTML'
+
+extra_css:
+  - css/style.css
+  - css/admonition_fix.css
+
+docs_dir: 'docs'
+
+theme:
+    name: null
+    custom_dir: 'yeti'

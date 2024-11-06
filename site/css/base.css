@@ -103,6 +103,8 @@ a > code:hover, a > code:focus {
     padding-top:    10px;
     padding-bottom: 10px;
     border-radius: 5px;
+    height: 650px;
+    overflow-y: auto; /* 添加滚动条 */
 }
 
 /* All levels of nav */
@@ -132,8 +134,8 @@ a > code:hover, a > code:focus {
 .bs-sidebar .nav .nav > li > a {
     padding-top:    3px;
     padding-bottom: 3px;
-    padding-left: 30px;
-    font-size: 90%;
+    padding-left: 50px;
+    font-size: 60%;
 }
 
 /* Show and affix the side nav when space allows it */

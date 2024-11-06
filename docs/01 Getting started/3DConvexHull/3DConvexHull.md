@@ -34,7 +34,7 @@
 >5. 得到凸包实体`3DConvexHull`；算法结束；
 
 
-<img src="https://i-blog.csdnimg.cn/direct/8dbb1e4b9e80463a8d9c0f64da4e2c6f.png" alt="增量构建示意图" title="增量构建示意图" width="800" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="../../../img/01/01/updateConvexHull.png" alt="增量构建示意图" title="增量构建示意图" width="800" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：增量构建示意图</figcaption>
 
 # 3. 代码
@@ -59,11 +59,11 @@ bool GeometryUtils::Cal3DConvexHull(const list<Vector3f>& lstVertex, Body& conve
 
 # 4. 效果
 
-<img src="https://i-blog.csdnimg.cn/direct/3623f959cd5f44ecb4a0f4bbec3d2445.png" alt="效果概览" title="效果概览" width="800" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="../../../img/01/01/result1.png" alt="效果概览" title="效果概览" width="800" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：效果概览</figcaption>
 
 
-<img src="https://i-blog.csdnimg.cn/direct/c3b83ff14a364e55833f5a9bfb0b8935.png" alt="效果概览" title="效果概览" width="800" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="../../../img/01/01/result2.png" alt="效果概览" title="效果概览" width="800" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：效果概览</figcaption>
  
 

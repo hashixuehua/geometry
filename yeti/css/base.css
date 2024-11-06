@@ -103,6 +103,8 @@ a > code:hover, a > code:focus {
     padding-top:    10px;
     padding-bottom: 10px;
     border-radius: 5px;
+    height: 650px;
+    overflow-y: auto; /* 添加滚动条 */
 }
 
 /* All levels of nav */

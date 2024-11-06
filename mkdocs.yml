@@ -1,9 +1,10 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 nav:
   - 主页: 'index.md'
   - 目录:
     - 简介: 'intro.md'
     - 凸包:
-      - 三维凸包: '01 Getting started/3DConvexHull.md'
+      - 三维凸包: '01 Getting started/3DConvexHull/3DConvexHull.md'
     - TODO:
       - TODO: '02 TODO'
   - 代码仓库: 'code_repo.md'

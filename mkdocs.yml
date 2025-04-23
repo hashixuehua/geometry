@@ -9,7 +9,7 @@ nav:
       - TODO: '02 TODO'
   - 代码仓库: 'code_repo.md'
 
-site_name: 'geometry algorithms'
+site_name: 'CGLib'
 
 site_description: '计算几何算法'
 

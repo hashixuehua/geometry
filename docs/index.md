@@ -2,6 +2,8 @@
 # 1.关于
 **CGLib** (Computational Geometry Library)，全称“计算几何库”，C++语言实现的可跨平台运行的几何库，覆盖常见几何算法内容，包括基础数据结构、仿射变换、常用计算工具、关系计算、网格化、布尔运算、实体造型、曲线曲面、精度&误差、其他常见议题及显示相关。
 
++ [去下载CGlib](https://github.com/hashixuehua/hashixuehua.github.io)
+
 同时提供C#版封装库。下图中***蓝色部分***为已有或正在建设中。
 
 <img src="./img/root/image-26.png" alt="CGLib应用架构" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -23,9 +25,20 @@
 !!! note "欢迎关注和交流"
 
     + **网站：**[cglib.net](cglib.net)
-    + **公众号：**[geometrylib](https://mp.weixin.qq.com/s/KRMuyvCr70Nuw5ZW0HWasw)
+    + **公众号：**[哈市雪花](https://mp.weixin.qq.com/s/KRMuyvCr70Nuw5ZW0HWasw)
     + **邮箱：** heuwzl@163.com
     + **CSDN：**[哈市雪花 ***（点击打开链接）***](https://blog.csdn.net/baidu_38621657)
+
+!!! note "`CGLib`提供的图形几何算法接口主要集中在如下头文件中"
+
+    + `CGUtils.h`:
+    包含实体造型、布尔运算、网格化、轮廓提取、生成轮廓树、凸分割、二三维凸包、紧密外轮廓、面积、体积计算，及一系列实体关系计算等接口；
+    + `CurveTool.h`:
+    包含距离、投影、法向计算、切割、线交点、点合并、线去重等基础接口；
+    + `BooleanUtils.h`:
+    轮廓布尔运算相关接口，包括交、并、差、取反接口；
+    + `Paving.h`
+    提供轮廓铺装算法接口；
 
 ## 1.1.基础概念
 1. 右手法则
@@ -83,6 +96,17 @@ CGLib提供面的面积计算，通过公式的推导简化计算逻辑和处理
 
     算法流程可参考博主CSDN博文：[一种误差较小的轮廓面积计算算法](https://blog.csdn.net/baidu_38621657/article/details/141868522)
 
+CGLib提供的接口如下，
+```c++
+//  CGUtils.h
+static double GetArea(const list<Line>& polygon, const Transform& trsW2L);
+static void GetTransformL2W(const list<Line>& polygon, Transform& trsL2W);
+
+//  (推荐使用) CurveTool.h 在计算法向时同样返回面积
+static Vector3f GetNormal(const list<Line>& polygon, double& area);
+
+```
+
 ## 4.3.体积
 CGLib提供实体体积计算，通过公式的推导简化计算逻辑和处理过程，从而提供精度较高的计算结果。由于体积计算依赖实体面的面积计算，实体面的面积计算具备上述面积计算的特点。
 值得一提的是长度、面积、体积计算的思想理念主要来源于微积分，微分和积分的思想，然后应用于算法中。
@@ -90,6 +114,12 @@ CGLib提供实体体积计算，通过公式的推导简化计算逻辑和处理
 !!! note "补充："
 
     算法流程可参考博主CSDN博文：[几何算法系列：空间实体体积计算公式推导](https://blog.csdn.net/baidu_38621657/article/details/143190814)
+
+CGLib提供的接口如下，
+```c++
+//  CGUtils.h
+static double GetVolume(const Body& body);
+```
 
 ## 4.4.法向
 CGLib提供轮廓和面的法向计算，结合加权平均的思想提供一种准确且误差较小的法向计算接口。在实际工程中，轮廓坐标可能很大，可能含有微小的边，可能具有整体平面但局部空间的特点......这可能导致计算误差，在算法实现中需要兼容考虑这些场景，因为你无法预测调用接口传入的数据，也很难去进行限制。
@@ -101,6 +131,12 @@ CGLib提供轮廓和面的法向计算，结合加权平均的思想提供一种
 
     算法流程可参考博主CSDN博文：[一种误差较小的计算轮廓法向的方法](https://blog.csdn.net/baidu_38621657/article/details/142600268)
 
+CGLib提供的接口如下，
+```c++
+//  CurveTool.h 计算法向同时返回面积
+static Vector3f GetNormal(const list<Line>& polygon, double& area);
+```
+
 ## 4.5.曲率
 CGLib曲率计算还不够完善，需要去建设。
 
@@ -109,8 +145,20 @@ CGLib曲率计算还不够完善，需要去建设。
 本节只关注与侠义的包围盒概念，有关其他概念可以继续阅读后续章节或参考相关资料。
 CGLib提供AABB包围盒的计算。
 
-<img src="./img/root/企业微信截图_17307057172710.png" alt="AABB和OBB包围盒的区别" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_17307057172710.png" alt="AABB和OBB包围盒的区别" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：AABB和OBB包围盒的区别</figcaption>
+
+CGLib提供的接口如下，
+```c++
+//  CGUtils.h
+static void getBoundingBox(const vector<pair<Vector3f, Vector3f>>& mapMeshId2BoundBox, Vector3f& boundingBoxMin, Vector3f& boundingBoxMax);
+static void getBoundingBox(const list<Vector3f>& lstVertex, Vector3f& boundingBoxMin, Vector3f& boundingBoxMax);
+static void getBoundingBox(const list<Line>& lstLine, Vector3f& boundingBoxMin, Vector3f& boundingBoxMax);
+static void getBoundingBox(const Body& body, Vector3f& boundingBoxMin, Vector3f& boundingBoxMax);
+static void getBoundingBox(const TriangleMesh* mesh, const Transform* trs, Vector3f& boundingBoxMin, Vector3f& boundingBoxMax);
+static void getBoundingBox_IdentTrs(const TriangleMesh* mesh, Vector3f& boundingBoxMin, Vector3f& boundingBoxMax);
+static void getBoundingBox_NotIdentTrs(const TriangleMesh* mesh, const Transform* trs, Vector3f& boundingBoxMin, Vector3f& boundingBoxMax);
+```
 
 ## 4.7.凸包
 凸包包括二维凸包和三维凸包，对于确定的数据，其凸包计算结果是确定的，无论采用哪种算法，也无论从数据的什么位置开始计算，这和Delaunay三角剖分算法有类似的特点。
@@ -118,7 +166,12 @@ CGLib提供二维凸包和三维凸包的计算，采用增量构建的思想。
 
 ### 4.7.1.二维凸包
 
-CGLib提供的二维凸包计算效果如下，
+CGLib提供的二维凸包计算接口和效果如下，
+
+```c++
+//  CGUtils.h
+static bool CalConvexHull(const list<Vector3f>& lstVertex, const Vector3f& normal, list<Line>& convexHull);
+```
 
 !!! note "提示："
 
@@ -131,22 +184,79 @@ CGLib提供的二维凸包计算效果如下，
 <figcaption style="text-align: center;">图：小树和小草的凸包-聚光灯下的效果</figcaption>
 
 ### 4.7.2.三维凸包
+CGLib提供的三维凸包计算接口和效果如下，
 
-<img src="./img/root/企业微信截图_17307058306701.png" alt="增量构建示意" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+```c++
+//  CGUtils.h
+static bool Cal3DConvexHull(const list<Vector3f>& lstVertex, Body& convexHull);
+```
+
+<img src="./img/root/微信截图_17307058306701.png" alt="增量构建示意" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：增量构建示意</figcaption>
 
 !!! note "提示："
 
-    如下效果图是在**GL3DViewer**中调用CGLib进行处理和渲染显示的。
+    如下效果图是在**GLViewer**中调用CGLib进行处理和渲染显示的。
 
-<img src="./img/root/企业微信截图_173070586736.png" alt="空间点集的三维凸包效果（左为线框模式，右为实体模式）" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_173070586736.png" alt="空间点集的三维凸包效果（左为线框模式，右为实体模式）" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：空间点集的三维凸包效果（左为线框模式，右为实体模式）</figcaption>
 
 !!! note "补充："
 
     算法流程可参考博主CSDN博文：[几何算法系列-三维凸包](https://blog.csdn.net/baidu_38621657/article/details/143163722)
 
-## 4.8.离散（Tessellate）
+## 4.8.紧密外轮廓
+CGLib支持计算点集、图像的紧急外轮廓，提供的接口和效果如下，
+
+```c++
+//  CGLib.h
+static bool CalMinHull(const list<Vector3f>& lstVertex, const Vector3f& normal, list<Line>& hull);
+```
+
+图片图像的紧密外轮廓计算可参考结合OpenCV库提取图像的轮廓线集合，之后再调用CGlib接口实现。
+
+```c++
+int getContoursFromImage(const cv::String& folder, const cv::String& fileName, std::vector<std::vector<cv::Point>>& contours, cv::Mat& srcImage)
+{
+    string filePath = folder + "/" + fileName;
+    srcImage = cv::imread(filePath, cv::ImreadModes::IMREAD_UNCHANGED);
+
+    //条件语句检查 srcImage 图像是否为空（即图像是否未成功加载）
+    if (srcImage.empty()) {
+        printf("could not load image ...");
+        return -1;
+    }
+
+    //cv::imshow("输入图像", srcImage);
+
+    double thresh = 85;
+
+    //  提取轮廓
+    cv::Mat image = cv::imread(filePath, cv::IMREAD_GRAYSCALE); // 读取灰度图像 
+    cv::Mat binaryImage;
+    cv::threshold(image, binaryImage, thresh/*100*/, 255, cv::THRESH_BINARY); // 二值化分割，大于阈值为255，小于阈值为0 
+    std::vector<cv::Vec4i> hierarchy;
+    // 遍历轮廓并绘制  
+    cv::findContours(binaryImage, contours, hierarchy, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
+
+    return 0;
+}
+```
+
+!!! note "提示/补充"
+
+	**CGViewer**直接提供图片绘制和外轮廓提取功能，并可将提取的外轮廓绘制到图片中，效果如下图，可免费使用。
+
+<img src="./img/root/minhull-polygon.png" alt="线集合的紧密外轮廓" width="300" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：线集合的紧密外轮廓</figcaption>
+
+<img src="./img/root/girl-temp.png" alt="小女孩图片的紧密外轮廓" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：小女孩图片的紧密外轮廓</figcaption>
+
+<img src="./img/root/flower2-temp.png" alt="玫瑰花图片的紧密外轮廓" width="300" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：玫瑰花图片的紧密外轮廓</figcaption>
+
+## 4.9.离散（Tessellate）
 Tessellate这一词汇在数学中,特别是在几何学领域,具有独特的含义。包括线的离散、面的离散、实体的离散等概念。
 你可能已经明白了，
 
@@ -162,11 +272,11 @@ Tessellate这一词汇在数学中,特别是在几何学领域,具有独特的�
     2. 将面离散为无重叠的铺满某种形状，包括面的网格化或面的凸分解；
     3. 将实体离散为无重叠的铺满三角形，即实体的网格化；
 
-## 4.9.UV计算
+## 4.10.UV计算
 UV计算是图形几何领域重要话题之一，曲线/曲面的参数化表达、纹理贴图的镶贴等均与此相关。
 CGLib的UV计算尚不够完善，正在建设中。
 
-## 4.10.形心
+## 4.11.形心
 形心即几何中心，作为几何特征之一，也是图形几何领域常见的概念。包括线的中心、面的形心、实体的几何中心等，此外重心、惯性矩等概念与此密切相关。
 
 # 5.关系计算
@@ -174,7 +284,7 @@ CGLib的UV计算尚不够完善，正在建设中。
 CGLib基本完整的提供上述大部分计算，包括关系计算、切割、布尔运算等相关内容。
 
 !!! note "提示："
-    如下效果图是在**GL2DViewer**、**GL3DViewer**中调用CGLib生成并显示的。
+    如下效果图是在**GL2DViewer**、**GLViewer**中调用CGLib生成并显示的。
 
 !!! important
     **关系计算** 为图形几何领域基础工具算法，是重要的基础设施，很多高级算法或应用算法均需要依赖这些基础设施进行实现。
@@ -242,10 +352,10 @@ CGLib Delaunay三角剖分效果如下，
 !!! note "提示："
     如下效果图是在**GL2DViewer**中绘制点并通过Delaunay网格生成命令控制生成的。
 
-<img src="./img/root/企业微信截图_17307061681766.png" alt="Delaunay剖分" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_17307061681766.png" alt="Delaunay剖分" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：Delaunay剖分</figcaption>
 
-<img src="./img/root/企业微信截图_17307061746304.png" alt="Delaunay剖分" width="400" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_17307061746304.png" alt="Delaunay剖分" width="400" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：Delaunay剖分</figcaption>
 
 ## 6.2.Voronoi图
@@ -265,6 +375,18 @@ CGLib同时提供凸分解计算，可以在凸分解计算的基础上进行凸
 
     值得一提的是BSP分割法更侧重于理念，在理论上这是一种有效的网格剖分方法，但会产生零碎的三角面，这些三角面可能和轮廓顶点没有连接关系，一般具体实现中不会采用此方法进行网格化计算。
 
+```c++
+//  CGUtils.h
+static void TessellateBody(const Body& body, TriangleMesh& mesh);
+static void TessellateFace(const Face& face, TriangleMesh& mesh);
+static void TessellateFace(const Face& face, vector<Vector3f>& lstPoint, vector<unsigned>& lstTri, vector<unsigned>& edges, vector<Vector3f>& normals, vector<Vector2f>& uvs);
+static void TessellatePolygon(const vector<Vector3f>& lstPoint, const Vector3f& normal, TriangleMesh& mesh);
+
+//  轮廓树（具有层级关系的轮廓集合）网格化
+static void TessellatePolygonTree(const PolygonTree* polygonTree, const Vector3f& normal, list<Vector3f>& lstPoints, list<unsigned int>& lstTris, list<unsigned int>& lstEdge, list<Vector3f>& lstNormal, list<Vector2f>& lstUv);
+static void TessellatePolygonTree(const PolygonTree* polygonTree, const Vector3f& normal, TriangleMesh& mesh);
+```
+
 ### 6.3.1.二维网格剖分
 CGLib提供的网格剖分效果如下，
 
@@ -272,7 +394,7 @@ CGLib提供的网格剖分效果如下，
 
     如下效果图是在**GL2DViewer**中绘制轮廓并通过网格剖分命令控制生成的。
 
-<img src="./img/root/企业微信截图_17307062239854.png" alt="“树状”轮廓耳切法效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_17307062239854.png" alt="“树状”轮廓耳切法效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：“树状”轮廓耳切法效果</figcaption>
 
 <img src="./img/root/image-3.png" alt="“碗状”轮廓耳切法效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -288,7 +410,7 @@ CGLib提供的网格剖分效果如下，
 CGLib提供的三维网格剖分效果如下，
 
 !!! note "提示："
-    如下效果图是在**GL3DViewer**中调用CGLib进行处理和渲染显示的。
+    如下效果图是在**GLViewer**中调用CGLib进行处理和渲染显示的。
 
 
 <img src="./img/root/image-8.png" alt="实体网格数据在OpenGL中的显示" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -304,21 +426,56 @@ CGLib提供的三维网格剖分效果如下，
 二维布尔运算可以**以点为单元**或**以线为单元**进行计算。
 CGLib提供二维布尔运算计算。
 
+```c++
+//  BooleanUtils.h
+//  取反
+static void AntiPolygon(const list<Line>& polygon, list<Line>& result);
+static void AntiPolygon(const list<list<Line>>& polygon, list<list<Line>>& result);
+
+//  交集
+static void Intersect(const Vector3f& normal, const list<Line>& outer1, const list<list<Line>>& inner1, const list<Line>& outer2, const list<list<Line>>& inner2, list<list<Line>>& result);
+
+//  并集
+static void Union(const Vector3f& normal, const list<Line>& outer1, const list<list<Line>>& inner1, const list<Line>& outer2, const list<list<Line>>& inner2, list<list<Line>>& result);
+
+//  差集
+static void Difference(const Vector3f& normal, const list<Line>& outer1, const list<list<Line>>& inner1, const list<Line>& outer2, const list<list<Line>>& inner2, list<list<Line>>& result);
+```
+
 !!! note "提示："
     如下效果图是在**GL2DViewer**中绘制轮廓并通过布尔运算命令控制生成的。
 
-<img src="./img/root/企业微信截图_17307060502667.png" alt="轮廓布尔交显示" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_17307060502667.png" alt="轮廓布尔交显示" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：轮廓布尔交显示</figcaption>
 
-<img src="./img/root/企业微信截图_17307060791699.png" alt="轮廓布尔并显示" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_17307060791699.png" alt="轮廓布尔并显示" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：轮廓布尔并显示</figcaption>
 
-<img src="./img/root/企业微信截图_17307061129108.png" alt="轮廓布尔减显示" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="./img/root/微信截图_17307061129108.png" alt="轮廓布尔减显示" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：轮廓布尔减显示</figcaption>
 
 ## 7.2.三维布尔运算
 根据实体结构表达方式分为***BRep布尔运算***、***CSG布尔运算***、***网格布尔运算***等，而网格布尔运算又有多种，如BSP方式、八叉树方式。
 CGLib提供BRep布尔运算、网格布尔运算，其中网格布尔运算提供BSP方式和八叉树方式。
+
+```c++
+//  CGUtils.h
+//  BRep布尔运算
+static void BodyIntersect(const Body& body1, const Body& body2, vector<Face>& facesInter);
+static void BodyUnion(const Body& body1, const Body& body2, vector<Face>& facesUnion);
+static void BodyDifference(const Body& body1, const Body& body2, vector<Face>& facesResult);
+
+//  mesh BSP布尔运算
+//  注意：建议forceOperate传参值false，否则可能出错抛异常
+static void BodyIntersect(const TriangleMesh& meshA, const TriangleMesh& meshB, TriangleMesh& inter, bool forceOperate);
+static void BodyUnion(const TriangleMesh& meshA, const TriangleMesh& meshB, TriangleMesh& meshUnion, bool forceOperate);
+static void BodyDifference(const TriangleMesh& meshA, const TriangleMesh& meshB, TriangleMesh& meshDiff, bool forceOperate);
+
+//  mesh 八叉树布尔运算
+static void BodyIntersect_CSGOctTree(const TriangleMesh& meshA, const TriangleMesh& meshB, TriangleMesh& inter);
+static void BodyDiff_CSGOctTree(const TriangleMesh& meshA, const TriangleMesh& meshB, TriangleMesh& meshDiff);
+static void BodyUnion_CSGOctTree(const TriangleMesh& meshA, const TriangleMesh& meshB, TriangleMesh& meshUnion);
+```
 
 !!! attention
     值得指出的是BSP方式更多的是理念方法，在实际工程中一般不采用此方式，BSP方式逻辑简单暴力，效率较低，会产生大量的零碎三角面，且对数据规范性要求较高，适用性较差，实际工程数据来源多，很难保证完全提供符合其要求的数据，不建议采用这种方式。
@@ -326,7 +483,7 @@ CGLib提供BRep布尔运算、网格布尔运算，其中网格布尔运算提�
 不同方式的布尔运算算法并非是功能完全一致的，即有其适用场景同时不可被另一种完全替代。可以根据实际应用场景进行布尔运算方式的选择，如原始实体数据为三角网格的时候采用网格布尔运算，而原始实体数据为BRep实体时采用BRep布尔运算方式。
 
 !!! note "提示："
-    如下效果图是在**GL3DViewer**中调用CGLib进行处理和渲染显示的。
+    如下效果图是在**GLViewer**中调用CGLib进行处理和渲染显示的。
 
 <img src="./img/root/image-7.png" alt="BRep布尔运算效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：BRep布尔运算效果</figcaption>
@@ -348,8 +505,35 @@ CGLib八叉树网格布尔运算对数据不规范情况进行的处理和方案
 实体造型是CAD领域核心话题，可以分为***拉伸***、***放样***、***旋转***、***直纹***、***融合***等多种实体类型的构造，还包括切割、倒角等局部造型优化内容，结合以实体布尔运算可以构造复杂多样的实体效果。
 CGLib涵盖主要造型议题，包括造型、局部造型优化、布尔运算等。
 
+```c++
+//  CGUtils.h
+//  拉伸体
+static void GenerateHColumnMesh(float H, float B1, float B2, float T1, float T2, float S, float height, const Vector3f& insert, TriangleMesh& mesh);
+static void GenerateHColumn(float H, float B1, float B2, float T1, float T2, float S, float height, const Vector3f& insert, Body& body);
+static void GenerateCube(const vector<Vector3f>& sectionPts, const Vector3f& normal, float height, Body& cube);
+static void GenerateCube(const Vector3f& pt0, const Vector3f& pt1, const Vector3f& pt2, const Vector3f& pt3, const Vector3f& pt4, const Vector3f& pt5, const Vector3f& pt6, const Vector3f& pt7, Body& cube);
+static void GenerateCircleColumn(float radius, float height, const Vector3f& insert, Body& body);
+
+static void ExtrusionPolygonTree(const PolygonTree* polygonTree, const Vector3f& normal, double height, Body& body);
+
+//  放样
+static void CreateLoftingSolid(const vector<Vector3f>& profile, const vector<Line>& path, Body& lofting);
+
+//  切割
+static bool Cut(const Body& body, const Face& cutFace, list<Body>& keepParts, list<Body>& cuttedParts);
+
+//  倒圆角
+static bool Rounding(const Line* top, const Line* bottom, double faceAngle, const Vector3f& normal, list<Line>& topRe, list<Line>& bottomRe);
+
+//  倒角
+static bool Chamfer(Body& body, const Line& targetBorder, float expand, bool rounding);
+
+//  曲面造型
+//  正在建设中，接口尚未开放
+```
+
 !!! note "提示："
-    如下效果图是在**GL3DViewer**中调用CGLib进行处理和渲染显示的。
+    如下效果图是在**GLViewer**中调用CGLib进行处理和渲染显示的。
 
 <img src="./img/root/image-20.png" alt="工字钢柱和直纹曲面实体造型" width="400" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：工字钢柱和直纹曲面实体造型</figcaption>
@@ -368,7 +552,8 @@ CGLib涵盖主要造型议题，包括造型、局部造型优化、布尔运算
 CGLib根据 ***《The NURBS Book 2nd》*** 中的理论和算法进行曲线曲面及相关算法的实现，主要提供Nurbs曲线曲面及相关算法。
 
 !!! note "提示："
-    如下效果图是在**GL3DViewer**中调用CGLib进行处理和渲染显示的。
+    如下效果图是在**GLViewer**中调用CGLib进行处理和渲染显示的；
+    曲线曲面相关接口尚未开放，建设中。
 
 <img src="./img/root/image-19.png" alt="曲面实体造型和网格布尔运算" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：曲面实体造型和网格布尔运算</figcaption>
@@ -387,11 +572,21 @@ CGLib根据 ***《The NURBS Book 2nd》*** 中的理论和算法进行曲线曲�
 平面或空间平面中存在若干条线，从中提取轮廓的过程即为轮廓提取。根据需要可以从中提取最大外围轮廓、所有闭合轮廓，当然也可以将提取的轮廓组织为轮廓树，方便进一步的应用。
 轮廓提取是夹角极值运用的算法，上述章节中的凸包计算也是夹角极值运用的算法。
 
-CGLib提供的轮廓提取效果如下，
+CGLib提供的轮廓提取接口和效果如下，
+
+```c++
+//  CGUtils.h
+//  提取轮廓（最小单元轮廓）
+static void ExtractPolygon(const list<Line>& lines, const Vector3f& normal, list<list<Line>>& polygons, map<int, map<int, double>>& mapPolyIndex2NearIndex);
+
+//  将轮廓集合转换为具有层级关系的轮廓树
+static void ConvertToPolygonTree(const list<list<Line>>& polygons, PolygonTree* polygonTree);
+static void ConvertToPolygonTree(list<list<list<Line>>::const_iterator>& polygons, PolygonTree* polygonTree);
+
+```
 
 !!! note "提示："
     如下效果图是在**GL2DViewer**中绘制轮廓并通过轮廓提取命令控制生成的。
-
 
 <img src="./img/root/image-14.png" alt="“叶子”轮廓的提取" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：“叶子”轮廓的提取</figcaption>
@@ -415,7 +610,19 @@ CGLib提供的轮廓提取效果如下，
 ## 10.4.凸分解
 凸分解分为二维凸分解和三维凸分解。像诸多二维算法的推广一样，三维凸分解也可由二维凸分解推广而得。
 由多种算法方案可以实现凸分解，包括夹角极值法、BSP分割法等。
-CGLib提供的凸分解计算效果如下，
+CGLib提供的凸分解接口和计算效果如下，
+
+```c++
+//  CGUtils.h
+//  对轮廓树进行凸分解
+static void ConvexDecompositionPolygonTree(const PolygonTree* polygonTree, const Vector3f& normal, list<list<Line>>& lstConvexPolygon);
+
+//  对轮廓进行凸分解
+static void ConvexDecomposition(const list<Line>& polygon, const Vector3f& normal, list<list<Line>>& lstConvexPoly);
+
+//  对Face(可含有洞口)进行凸分解
+static void ConvexDecomposition(const Face& face, const Vector3f& normal, list<list<Line>>& lstConvexPoly);
+```
 
 !!! note "提示："
     如下效果图是在**GL2DViewer**中绘制轮廓并通过凸分解命令控制生成的。
@@ -423,36 +630,63 @@ CGLib提供的凸分解计算效果如下，
 <img src="./img/root/e9b202a47abca7166f0e88da04459b5.png" alt="轮廓凸分解效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：轮廓凸分解效果</figcaption>
 
-## 10.5.边线提取
+## 10.5.轮廓铺装
+CGLib提供轮廓铺装算法接口，可对任意多边形轮廓（可嵌套洞口）、轮廓树进行铺装，接口和效果如下，
+
+```c++
+//  Paving.h
+static void Run(const list<list<Line>>& polygon, double tileLen, double tileWid, double rotateAng, const Vector3f& start, list<list<Line>>& pavingTiles);
+```
+
+<img src="./img/root/paving.png" alt="轮廓铺装效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：轮廓铺装效果</figcaption>
+
+<img src="./img/root/paving-1.png" alt="轮廓铺装效果（线框模式）" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：轮廓铺装效果（线框模式）</figcaption>
+
+## 10.6.边线提取
 为增强模型显示效果，凸显层次感，往往需要进行轮廓边线信息的显示，当原始几何数据为三角面数据时，往往需要自动进行边线提取，这就需要边线提取算法。
 
 !!! note "补充："
     为区分于**10.2**节中的***轮廓提取***算法，本节采用***边线提取***作为当前算法的名称。
 
 !!! note "提示："
-    如下效果图是在**GL3DViewer**中调用CGLib进行处理和渲染显示的。
+    如下效果图是在**GLViewer**中调用CGLib进行处理和渲染显示的。
 
 <img src="./img/root/image-13.png" alt="边线提取和显示" width="400" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：边线提取和显示</figcaption>
 
-## 10.6.实例化识别
+## 10.7.实例化识别
 在实际工程中往往需要识别提取**形体一致**的元素，如在图纸中提取相同的实例标识以进行数量统计和造价计算、在三维模型中识别和提取几何一致的构件以进行几何数据的共享等。
 
 !!! note "补充："
     这里的**形体一致**广义上还涵盖非均匀仿射变换关系的元素，在实际算法实现中为简化算法逻辑和处理过程，往往只关注均匀缩放/旋转/平移仿射变换的元素的**一致性识别**。
 
-## 10.7.碰撞检查
+## 10.8.碰撞检查
 碰撞检查算法可根据空间域角度和时间域角度进行分类。
 
-## 10.8.路径规划
+## 10.9.路径规划
 路径规划是运动规划的主要研究内容之一。运动规划由路径规划和轨迹规划组成，连接起点位置和终点位置的序列点或曲线称之为路径，构成路径的策略称之为路径规划。
 路径规划在很多领域都具有广泛的应用。在高新科技领域的应用有：机器人的自主无碰行动；无人机的避障突防飞行；巡航导弹躲避雷达搜索、防反弹袭击、完成突防爆破任务等。
 
-## 10.9.共线合并
+## 10.10.点合并
+CGLib支持对重合点进行去重合并，接口如下，
+
+```c++
+//  CurveTool.h
+static void mergePoints(const list<Vector3f>& points, list<Vector3f>& result);
+```
+
+## 10.11.共线合并
 在图形几何中，共线是指一组点或线段在同一直线上的情况，包括完全重合和部分重合情况的去重合并处理。一些图形几何算法的前处理过程需要进行共线合并，如**轮廓提取**。
 CGLib提供共线合并算法，
 
-## 10.10.最短距离点
+```c++
+//  CurveTool.h
+static void duplicateRemoval(const Vector3f& boundBoxMin, list<Line>& lines, bool ignoreDir);
+```
+
+## 10.12.最短距离点
 在一些计算中往往需要关注和目标点距离最近的点以进一步进行处理，CGLib提供从点集中寻找距离最近的点的计算。
 
 CGLib提供的最短距离点计算效果如下，
@@ -472,24 +706,22 @@ CGLib提供的最短距离点计算效果如下，
     相关内容可参考博主CSDN博文：[关于float浮点值二进制存储和运算精度损失的话题](https://blog.csdn.net/baidu_38621657/article/details/141027014)
 
 # 12.显示
-为便于CGLib库的可视化展示，同时开发了***GL2DViewer***（基于WPF实现）和***GL3DViewer***（基于OpenGL实现）工具进行CGLib库的应用和可视化呈现。
+为便于CGLib库的可视化展示，同时开发了***GL2DViewer***（基于WPF实现）和***GLViewer***（基于OpenGL实现）工具进行CGLib库的应用和可视化呈现。
 
 !!! note "提示："
-    目前这两款工具尚未对外进行发布。
+    GLViewer可以免费使用： [github下载](https://github.com/hashixuehua/GLViewer-3D)。
 
 <img src="./img/root/GL2DViewer-1.png" alt="GL2DViewer" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：GL2DViewer</figcaption>
 
-<img src="./img/root/GL3DViewer-1.png" alt="GL3DViewer" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
-<figcaption style="text-align: center;">图：GL3DViewer</figcaption>
+<img src="./img/root/GLViewer.png" alt="GLViewer" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：GLViewer</figcaption>
 
 <img src="./img/root/image-27.png" alt="基于Winform GDI+的结构力学求解器" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：基于Winform GDI+的结构力学求解器</figcaption>
 
 # 13.其他
 CGLib支持跨平台。
-
->***//2024-11-4 20:55 TODO......***
 
 !!! note "欢迎关注和交流"
     欢迎关注和交流。微信公众号（[**文章顶部**](#follow)）后续会更新相关***图形几何算法文章***，欢迎交流。

@@ -1,5 +1,5 @@
-# （补充）关于vcpkg的使用
-## 通过vcpkg安装opencv
+# 8.关于vcpkg的使用
+## 8.1.通过vcpkg安装opencv
 
 ```js
 cd 到vcpkg安装目录
@@ -43,7 +43,7 @@ cd vcpkg
 ./vcpkg install assimp
 ```
 
-## 通过vcpkg安装assimp（按需）
+## 8.2.通过vcpkg安装assimp（按需）
 如果需要使用`assimp`库，相信你已经知道怎么通过`vcpkg`来安装，并在`cmakelists`中配置使用了。
 
 请回顾上述内容，可参考下面的链接，如果有必要的话，

@@ -1,9 +1,9 @@
-# 8.添加视图立方体（ViewCube）
+# 10.添加视图立方体（ViewCube）
 视图立方体（`ViewCube`）能够与当前视角联动展示，可以方便的看出当前视角方位，同时也可以通过`ViewCube`的交互快速的切换到对应视图，如俯视图。
 
 本节课程我们一起来创建`ViewCube`并把它加入到`Viewer`中。
 
-## 8.1.引入处理纹理的shader
+## 10.1.引入处理纹理的shader
 
 在`src/shader`目录下新建顶点着色器和片段着色器shader文件，
 
@@ -113,7 +113,7 @@ void initTextureShader(QOpenGLShaderProgram& shader)
 }
 ```
 
-## 8.2.纹理图片
+## 10.2.纹理图片
 我们在根`cmakelists`同级目录中创建`resources`文件夹，并把如下图片文件放进去，同时在`resources`中创建`glviewer.qrc`资源文件，将`viewcube.png`更新进去。
 
 <img src="../img/cad/viewcube.png" alt="viewcube.png" width="200" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -134,7 +134,7 @@ void initTextureShader(QOpenGLShaderProgram& shader)
 
 此时，可以在项目中使用`viewcube.png`了。
 
-## 8.3.绘制viewCube
+## 10.3.绘制viewCube
 回顾以下上节`workPlane`的绘制步骤，还记得吗？先`setup`，然后`draw`，是的，`viewCube`也是如此。
 
 ```c++
@@ -215,7 +215,7 @@ void Model::DrawViewCube(QOpenGLShaderProgram& shader)
 
 这个过程熟悉吗？
 
-## 8.4.在渲染循环中调用绘制
+## 10.4.在渲染循环中调用绘制
 上述我们得到的mesh是中心在原点，长宽高均为50的立方体，我们怎么把它放到三维场景的右上角呢？在视角变动的过程中怎么样让它的中心固定呢？
 
 这需要我们回顾渲染管线章节部分内容，局部坐标-（`modelMatrix`）->世界坐标-（`viewMatrix`）->观察空间-(`projectionMatrix`)->裁剪空间，之后经过透视除法变换到[-1,1]空间范围，然后通过视口变换映射到屏幕上的像素范围（如800*600）。
@@ -264,14 +264,14 @@ m_model->DrawViewCube(m_textureShader);
 m_textureShader.release();
 ```
 
-## 8.5.效果
+## 10.5.效果
 如果一切正常，或者遇到的问题被排查解决，那么运行后可以看到如下效果。
 
 <img src="../img/cad/image-29.png" alt="viewCube效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：viewCube效果</figcaption>
 
-## 8.6.通过viewCube切换视图
-### 8.6.1.监控鼠标事件
+## 10.6.通过viewCube切换视图
+### 10.6.1.监控鼠标事件
 我们在`event`函数中添加如下实现监控鼠标左键点击事件，
 
 ```c++

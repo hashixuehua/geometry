@@ -1,7 +1,7 @@
-# 7.绘制默认的工作平面
+# 9.绘制默认的工作平面
 这一节我们将绘制默认的工作平面和当前的工作平面，并用网格线进行填充，这回用到我们此前介绍过的`数据与渲染的桥梁`（`VAO、VBO、EBO`）相关知识。
 
-## 7.1.在顶点着色器中添加世界坐标转换处理
+## 9.1.在顶点着色器中添加世界坐标转换处理
 由于OpenGL默认是`y-up`，我们开发的Viewer是`z-up`的，为了让Viewer达到`正确`效果，我们需要叠加`y-up to z-up`的转换矩阵。
 
 ```c++
@@ -19,7 +19,7 @@ m_modelMatrix = m_modelMatrix.transposed();
 m_lightShader.setUniformValue("model", m_modelMatrix);
 ```
 
-## 7.2.定义`WorkPlanePara`
+## 9.2.定义`WorkPlanePara`
 我们定义类`WorkPlanePara`来表示工作平面，
 
 ```c++
@@ -41,7 +41,7 @@ public:
 };
 ```
 
-## 7.3.定义变量并进行工作
+## 9.3.定义变量并进行工作
 然后定义当前`defaultWorkPlane`和`currentWorkPlane`，随后调用`GetWorkPlaneMesh`函数获取对应的mesh，之后添加到当前成员变量`mapName2VMesh`中，
 在每个渲染循环中我们进行绘制。
 
@@ -78,7 +78,7 @@ void Model::drawWorkPlane(QOpenGLShaderProgram& shader)
 }
 ```
 
-## 7.4.效果
+## 9.4.效果
 
 !!! note "提示："
     详细请查看本节课程对应的代码工程，我们也用到了智能指针`shared_ptr`来管理堆上的资源(Mesh*)，

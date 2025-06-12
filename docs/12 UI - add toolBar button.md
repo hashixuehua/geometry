@@ -1,9 +1,9 @@
-# 10.UI：添加工具栏按钮
+# 12.UI：添加工具栏按钮
 Qt框架提供丰富的功能库，且在跨平台兼容方面表现出色，使得适配兼容不同的操作系统变得更简单，降低开发和维护成本。
 
 本节课我们来近距离体验和感受使用QT开发UI的过程。
 
-## 10.1.将图标图片添加到资源文件中
+## 12.1.将图标图片添加到资源文件中
 将`line.png`等图片添加到`glviewer.qrc`中，便于接下来作为工具按钮图标使用。
 
 ```js
@@ -20,7 +20,7 @@ Qt框架提供丰富的功能库，且在跨平台兼容方面表现出色，使
 </RCC>
 ```
 
-## 10.2.创建绘制线的按钮
+## 12.2.创建绘制线的按钮
 1) 打开项目
 
 首先，我们使用打开`Qt Creator`，
@@ -70,7 +70,7 @@ Qt框架提供丰富的功能库，且在跨平台兼容方面表现出色，使
 
 还可以在工具栏上右键，选择`添加分隔符`，这样按钮右侧添加了竖向分隔符，排列更美观~
 
-## 10.3.监控并绑定点击事件
+## 12.3.监控并绑定点击事件
 注意可以有多种方式实现绑定点击事件，如在`Action编辑器`的`actionLine`行右键，转到槽，选择`triggerred`，确定，即自动创建函数并绑定点击事件，然后填充函数实现即可。
 
 <img src="../img/cad/image-45.png" alt="添加事件" width="400" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -112,7 +112,7 @@ public slots:
 
 记得在`glwindow`构造函数中调用`createActions`。
 
-## 10.4.构建运行
+## 12.4.构建运行
 如果一切正常，或者遇到的问题被排查解决，那么运行后可以看到如下效果。
 
 <img src="../img/cad/image-47.png" alt="Hello Action" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -121,7 +121,7 @@ public slots:
 !!! note "提示"
     现在再来操作操作，看起来有点雏形的样子了~
 
-## 10.5.添加到菜单项中
+## 12.5.添加到菜单项中
 在本节课程我们添加了菜单项`Draw`和工具栏按钮`Line`，虽然工具栏按钮可以点击触发事件，带哦用绑定的函数了，但菜单项`Draw`下是空白的，我们尝试把`Line`加进去~
 
 <img src="../img/cad/image-48.png" alt="将action添加到菜单项中" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>

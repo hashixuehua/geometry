@@ -1,7 +1,7 @@
-# 9.添加旋转中心标识
+# 11.添加旋转中心标识
 旋转是三维软件的基础交互功能，常常需要显示旋转中心标识以方便观察当前旋转中心位置。如当选中构件时旋转常常期望以构件（接触点或几何中心等）为中心进行旋转；无聚焦点时旋转又常常以场景中心为旋转中心。
 
-## 9.1.概述
+## 11.1.概述
 基于如下考虑，我们采用此前绘制viewCube的思路来绘制旋转中心，还能想起来吗？
 
 1) 构建原点为中心的数据；
@@ -15,7 +15,7 @@
     * 为保持更高的渲染效率，继续采用基于`VAO、VBO、EBO`的数据桥梁机制，先配置好数据，而后在渲染循环中绘制；
     * 考虑可维护性和扩展性，采用相同的机制绘制场景元素，如`viewCube`、`mouseRotateLabel`等；
 
-## 9.2.添加世界坐标和屏幕坐标转换函数
+## 11.2.添加世界坐标和屏幕坐标转换函数
 在此前的相机实现中，我们通过监控鼠标左键按住移动事件实现了场景旋转，其中我们判断了第一次按下时鼠标所在位置是否`接触`有效元素，并计算并记录接触位置的`场景坐标`赋值给`mousePos4Rotate`。
 
 !!! note "提示："
@@ -45,7 +45,7 @@ void ViewerUtils::worldToScreen(const QVector3D& wcsPt, const QRect& viewport_re
 
 另外，我们也定义了`screenToWord`函数，详见工程代码~
 
-## 9.3.配置数据
+## 11.3.配置数据
 我们参考`viewCube`数据的配置过程配置`旋转中心标识`数据，我们需要一个中心在原点的矩形面结合标识图片作为纹理来表达。
 
 ```c++
@@ -93,7 +93,7 @@ void Model::setupMouse()
 
 嘿嘿，上面的标识图片使用了`CGLib`库的计算紧密外围轮廓的函数并将紧密外轮廓绘制到了图片上（亮显的外轮廓）。
 
-## 9.4.绘制函数
+## 11.4.绘制函数
 由于这些`场景元素`的绘制过程是大致一样的，我们进行抽象和重构，
 
 ```c++
@@ -128,7 +128,7 @@ void Model::DrawViewElement(QOpenGLShaderProgram& shader, const string& name)
 
 后续其他场景元素也可采用类似的机制和过程，如`鼠标捕捉标识`、`坐标系标识`等。
 
-## 9.5.在渲染循环中调用绘制
+## 11.5.在渲染循环中调用绘制
 通过此前课程我们知道`OpenGL`是一个状态机，其中的渲染管线也是，参考杉树`viewCube`的配置过程，我们需要对渲染管线的几个关键环节进行`状态配置`。
 
 1. 通过固定的正视视角和距离构造观察矩阵`GetViewMatrix4MouseLabel`；
@@ -163,7 +163,7 @@ m_textureShader.setUniformValue("model", m_modelMatrix);
 m_model->DrawViewElement(m_textureShader, ViewerCache::mouseLabel);
 ```
 
-## 9.6.效果
+## 11.6.效果
 如果一切正常，或者遇到的问题被排查解决，那么运行后可以看到如下效果。
 
 <img src="../img/cad/image-32.png" alt="鼠标旋转中心标识效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>

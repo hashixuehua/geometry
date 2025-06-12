@@ -1,5 +1,5 @@
-# 16.选中效果
-## 16.1.优化着色器代码
+# 18.选中效果
+## 18.1.优化着色器代码
 在正式开启本节课程前，我们首先顺便做了如下事情，
 
 1. 将`initShader`函数改造了下，能够初始化各个shader；
@@ -66,7 +66,7 @@ void main()
 <img src="../img/cad/image-69.png" alt="优化渲染效果" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：优化渲染效果</figcaption>
 
-## 16.2.实现GPU Picking
+## 18.2.实现GPU Picking
 
 !!! note "概念和知识"
     + 颜色缓冲、深度缓冲和模板缓冲结合起来叫做帧缓冲(`Framebuffer`)，它被储存在GPU内存中。OpenGL允许我们定义我们自己的帧缓冲，也就是说我们能够定义我们自己的颜色缓冲，甚至是深度缓冲和模板缓冲。

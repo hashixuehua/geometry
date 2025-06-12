@@ -1,4 +1,4 @@
-# 11.Draw line以及框架体系介绍
+# 13.Draw line以及框架体系介绍
 本节课程内容较多，同时引入了`PreviewData`、`Command`、`DrawingLinesHolder`、`DrawingViewerElemHolder`等状态设置或绘制管理类，同时丰富了相关工具函数类，当前的逻辑关系图如下。
 
 <img src="../img/cad/image-50.png" alt="框架体系图" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -6,7 +6,7 @@
 
 为便于讲解，同时又能有完整的功能效果，接下来将会先逐级铺垫相关内容，最后再组合连接，展示效果。
 
-## 11.1.DrawingLinesHolder
+## 13.1.DrawingLinesHolder
 `DrawingLinesHolder`是线数据管理和绘制类，我们先来看`DrawingLinesHolder`主要的的public函数调用逻辑图，
 
 <img src="../img/cad/image-51.png" alt="`DrawingLinesHolder`接口调用逻辑" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -29,7 +29,7 @@
 
 当然选中状态的线索引、节点数据、工作平面等，可自行根据上述执行逻辑熟悉。
 
-## 11.2.DrawingViewerElemHolder
+## 13.2.DrawingViewerElemHolder
 
 !!! important
     本节对此前工作平面相关数据构建和绘制内容进行了抽象和封装，封装成了`DrawingViewerElemHolder`类。
@@ -46,7 +46,7 @@
 
 由于viewer元素是相对固定的，大部分时候我们只需要根据固定的数据`setup`一次，然后在每个渲染循环中不断的取`draw`即可；当然当有需要去设置工作平面时，我们再去对应的用新数据`setup`工作平面。
 
-## 11.3.Model
+## 13.3.Model
 `Model`类我们比较熟悉，本节经过重构之后丰富了其功能，我们也一起梳理下它的结构和运行机制。
 
 我们来看public函数的调用逻辑，
@@ -65,7 +65,7 @@
 
 到这里大家基本上理解了`Model`类的作用是场景数据的管理和绘制，它会与`ViewerSetting`、`PreviewData`进行联动和状态设置，调用`DrawingLinesHolder`、`DrawingViewerElemHolder`来具体实现。
 
-## 11.4.PreviewData
+## 13.4.PreviewData
 `PreviewData`负责效果预览和完成的数据处理，处理和组织预览数据并在达到完成条件时生成结果数据（通过`getCompleteLines`）更新到`DrawingLinesHolder`中。
 
 `PreviewData`为`Model`和`GLView`类提供状态数据的处理和更新，从这个角度来说它时辅助类。
@@ -88,7 +88,7 @@
 
 详细的实现细节需要大家看代码进行熟悉，由于课程时间和精力有限博主不在这里过多絮叨~，有问题或疑问请留言或联系我。
 
-## 11.5.ViewerCommand
+## 13.5.ViewerCommand
 `ViewerCommand`是参数命令驱动系统，负责处理绘制状态下的交互操作，包括鼠标点击、命令和参数输入等操作，识别有效的操作并返回数据传递给`Model`进行进一步的绘制数据处理。
 
 `ViewerCommand`核心是命令节点的网状结构，允许一个节点链接一到多个节点及复杂链接的循环指向。如三点定圆命令结构如下，
@@ -116,7 +116,7 @@
 
 由于课程时间和精力有限，作者不在这里过多絮叨~，有问题或疑问请留言或联系我。
 
-## 11.6.Camera
+## 13.6.Camera
 此前将结果`Camera`类的详细实现，相信大家对此不陌生，本节我们一起回顾下其运行机制。
 
 我们来看其public函数的调用逻辑，
@@ -132,7 +132,7 @@
 
 好了，详细的实现细节需要大家看代码进行回顾~
 
-## 11.7.总结
+## 13.7.总结
 
 <img src="../img/cad/image-50.png" alt="框架体系图" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：框架体系图</figcaption>

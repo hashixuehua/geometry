@@ -1,4 +1,4 @@
-# 18.框选选择
+# 20.框选选择
 在三维软件交互中，框选是一种提高工作效率的交互功能，可以根据框选范围选中完全在其中或相交的组件，可以增强用户体验。
 
 框选框的绘制有多种实现方式，本节介绍其中两种，
@@ -9,7 +9,7 @@
 
 这两种方式各有优缺点，第一种方式避免了频繁搭建数据和渲染桥梁的过程，但需要在每个渲染循环中进行更多的计算：计算当前的`modelMatrix`；第二种方式需要在每个渲染循环中进行数据和渲染桥梁的搭建，然后绘制，但不用进行过多的计算过程。
 
-## 18.1.方式一
+## 20.1.方式一
 下图描述了方式一的工作流程，
 
 <img src="../img/cad/image-76.png" alt="方式一：构建初始框数据 + 变换形态" width="600" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -78,7 +78,7 @@ Transform ViewerUtils::getRectSelectMatrix(const vector<Vector3f>& rectData)
 !!! note "提示"
     如果采用方式一进行选择框的绘制，那么记得在渲染循环中设置点光源位置为相机位置沿`Front`逆向偏移一段距离，以让选择框显示效果更亮。
 
-## 18.2.方式二
+## 20.2.方式二
 
 <img src="../img/cad/image-77.png" alt="方式二：实时计算、构建和绘制选择框" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：方式二：实时计算、构建和绘制选择框</figcaption>
@@ -88,7 +88,7 @@ Transform ViewerUtils::getRectSelectMatrix(const vector<Vector3f>& rectData)
 1. 屏幕像素位置和深度对应三维空间中的位置，我们根据鼠标初始点击和当前位置，加之深度为`0`来通过渲染管线矩阵变换的逆过程得到在世界坐标系中的空间位置，构造空间矩形；然后`setup`；
 2. 经过渲染管线的处理，空间矩形被绘制在屏幕上，与初始鼠标位置和当前鼠标位置映射的轴对齐矩形；
 
-## 18.3.补充
+## 20.3.补充
 
 !!! note "思考"
     + 为什么我们在计算屏幕点的空间位置时，选择深度为`0`呢？
@@ -101,7 +101,7 @@ Transform ViewerUtils::getRectSelectMatrix(const vector<Vector3f>& rectData)
 !!! note "提示"
     我们实现的框选支持正选与反选，快来试着操作一下吧，向左上、右上、左下、右下画框选框，具体逻辑可自行思考~
 
-## 18.4.总结
+## 20.4.总结
 作者（`哈市雪花`）在`GLViewer`中采用了方式二来绘制框选框，二者各有优点，方式二具有更优的效率、准确性和可靠性，但其增加了相对多的接口。
 
 我们回顾下框选实现逻辑，

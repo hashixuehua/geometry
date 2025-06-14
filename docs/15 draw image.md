@@ -1,6 +1,11 @@
 # 15.Draw Image
 此前的课程中我们有过使用图片作为纹理的经验，在绘制mesh前绑定纹理资源，绘制出表面贴有图片的效果，本节课程我们将交互式的绘制图片，同样采用纹理技术路线。
 
+<img src="../img/cad/image-ralation-image.png" alt="模块逻辑关系图" width="700" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：模块逻辑关系图</figcaption>
+
+我们跟着模块逻辑关系图来梳理步骤，
+
 1. 首先将`drawImage.png`添加到`glviewer.qrc`中以便在项目中使用；
 2. 参考此前课程添加`actionImage`，两种方式中选一种即可；
 3. 进入绘制命令后首先使用`QFileDialog`打开目标图片，并将其设置到图片绘制的上下文中；

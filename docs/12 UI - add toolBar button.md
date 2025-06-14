@@ -122,7 +122,7 @@ public slots:
     现在再来操作操作，看起来有点雏形的样子了~
 
 ## 12.5.添加到菜单项中
-在本节课程我们添加了菜单项`Draw`和工具栏按钮`Line`，虽然工具栏按钮可以点击触发事件，带哦用绑定的函数了，但菜单项`Draw`下是空白的，我们尝试把`Line`加进去~
+在本节课程我们添加了菜单项`Draw`和工具栏按钮`Line`，虽然工具栏按钮可以点击触发事件，调用绑定的函数了，但菜单项`Draw`下是空白的，我们尝试把`Line`加进去~
 
 <img src="../img/cad/image-48.png" alt="将action添加到菜单项中" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：将action添加到菜单项中</figcaption>

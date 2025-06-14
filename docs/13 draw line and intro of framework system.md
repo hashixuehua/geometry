@@ -1,8 +1,15 @@
 # 13.Draw line以及框架体系介绍
-本节课程内容较多，同时引入了`PreviewData`、`Command`、`DrawingLinesHolder`、`DrawingViewerElemHolder`等状态设置或绘制管理类，同时丰富了相关工具函数类，当前的逻辑关系图如下。
+
+!!! note "提示："
+    作者在`视频课程`中对本章内容有详细的批注讲解，包括原理和代码逻辑，欢迎观看。
+
+本节课程内容较多，同时引入了`PreviewData`、`Command`、`DrawingLinesHolder`、`DrawingViewerElemHolder`等状态设置或绘制管理类，同时丰富了相关工具函数类，当前的框架体系图和模块逻辑关系图如下。
 
 <img src="../img/cad/image-50.png" alt="框架体系图" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
 <figcaption style="text-align: center;">图：框架体系图</figcaption>
+
+<img src="../img/cad/image-relation.png" alt="模块逻辑关系图" width="700" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：模块逻辑关系图</figcaption>
 
 为便于讲解，同时又能有完整的功能效果，接下来将会先逐级铺垫相关内容，最后再组合连接，展示效果。
 

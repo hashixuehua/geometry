@@ -36,6 +36,9 @@ nav:
       - 26 关于: '26 about.md'
       - 27 文件打开和保存: '27 file open and save.md'
       - 28 其它事项: '28 other matters.md'
+    - 高级效果:
+      - 29 外轮廓效果: '29 object outlining.md'
+      - 30 抗锯齿: '30 anti aliasing.md'
   - 课程代码: 'code_repo.md'
   - CGLib: 'intro.md'
 

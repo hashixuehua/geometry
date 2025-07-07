@@ -20,7 +20,13 @@ if(WIN32)
 endif()
 ```
 
-* 还有一件事，迟早得做，现在做了吧，把CGLib的dll和pdb文件拷贝到本项目的输出目录中（GLViewer.exe所在目录），默认是这里`out\build\x64-Debug\src`，如果没有更改的话。
+* 还有一件事，迟早得做，现在做了吧，把CGLib的dll和pdb文件拷贝到本项目的输出目录中（GLViewer.exe所在目录），默认是这里`out\build\x64-RelWithDebInfo\src`，如果没有更改的话。
+
+!!! important
+    建议用`ReleaseWithDebugInfo`配置进行开发和调试。由于`CGLib`是`Release`下编译的，对外接口的参数有`STL`容器，这样在程序中用`Debug`配置时运行就会出现报错。当然后续会考虑封装参数来避免此问题。
+
+<img src="../img/cad/releaseWithDebugInfo.png" alt="建议使用releaseWithDebugInfo配置开发和调试" title="切换到cmake项目视图" width="700" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：建议使用releaseWithDebugInfo配置开发和调试</figcaption>
 
 ## 6.2.添加ViewerSetting类
 

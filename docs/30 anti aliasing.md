@@ -64,7 +64,7 @@
 现在我们将逻辑穿起来，来看一下多重采样下片段及其颜色的产生。
 
 !!! important
-    1. （光栅化阶段采样时）当像素内有子采样点被图元形状覆盖时，该像素及对应数据（顶点数据插值得到）会执行片段着色器，**输出的颜色将被记录在被覆盖的子采样点中**；
+    1. （光栅化阶段采样时）当像素内有子采样点被图元形状覆盖时，该像素及对应数据（**顶点数据插值得到**）会执行片段着色器，**输出的颜色将被记录在被覆盖的子采样点中**；
     2. 在模板测试和深度测试后可能会有部分子采样点被丢弃，**颜色信息只存储于被覆盖的且通过测试的子采样点中**；
     3. 在恢复（Resolve）阶段对子采样点及其颜色数据进行**加权处理**得到像素的颜色，被保留的子采样点及颜色能够对结果产生重要影响，否则只能作为分母的一份子参与处理。
 
@@ -118,7 +118,7 @@ glRenderbufferStorageMultisample(GL_RENDERBUFFER, ViewerSetting::sampleSieOfMSAA
     + 有了之前的选择帧缓冲的使用经验，本节课程的内容理解和应用会容易的多；
     + `OpenGL`允许我们自定义自己的帧缓冲，来实现一些灵活多样的功能，我们现在自定义了两种帧缓冲啦。
 
-## 30.4.效果
+## 30.4.MSAA效果
 当设置的每个像素的子采样点数量是`4`时，我们切换到本文开头齿距情况图的类似视角，效果如下，
 
 <img src="../img/cad/image-samplecount4.png" alt="子采样点数量为`4`时" width="900" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -136,7 +136,46 @@ glRenderbufferStorageMultisample(GL_RENDERBUFFER, ViewerSetting::sampleSieOfMSAA
     + 开启`MSAA`后在大部分视角下锯齿效果都有较好的改善。如果仔细观看的话，组件的边线看起来“变粗”了，实际是其变的“边缘模糊”了。
     + 增大子采样点数量意味着更多的性能消耗。
 
-## 30.5.自定义抗锯齿算法
+详细视频效果：[讲解MSAA抗锯齿的效果、不足和弥补(PPAA)：OpenGL+QT开发三维引擎](https://www.bilibili.com/video/BV1WugSzdEdV/)
+
+## 30.5.MSAA的特点和不足
+`MSAA`方式通过增加像素的子采样点方式来提高像素的采样精度，进而对应片段数据（顶点、颜色、深度、模板值等信息）会更逼近于实际图元。
+
+当子采样点数量增大到一定数值后再进行增大，会出现没有视觉效果提升的感官情况，因为“目标像素”是局限在有子采样点被覆盖的像素，遮盖度精确到一定数值后再精确不会带来视觉效果的“变化”。***对于距离实际图元非常近的像素，由于其与图元没有重叠或重叠范围很小，导致其始终不能被采样***，这在数学上是合理的：没有重叠，就不采样！但在应用上是合理的吗？它旁边的像素只有部分重叠，为什么被采样了？而且颜色覆盖整个像素区域！这依然没有逼近线性的效果！
+
+<img src="../img/cad/image-MSAASample.png" alt="MSAA采样方式的特点和不足" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：MSAA采样方式的特点和不足</figcaption>
+
+<br/>
+
+一种处理办法是结合边线数据的后处理进行边缘的模糊，即迭代逼近于视觉上的线性效果。
+
+1. 开启模板值写入，正常绘制边线，设置所有片段都通过模板测试且在深度测试通过后写入固定模板值，比如`2`；
+2. 以较大的边线宽度（如`1.2`倍），和相对较浅的颜色重新绘制边线，这次只让模板值不为`2`的片段通过模板测试，进而在通过之后的深度测试等处理后输出颜色；这种方式（1）不会影响此前的输出效果（2）会考虑“距离”因素，将符合近距离条件的像素赋予较浅的颜色值；进一步的模糊了边缘，也就是逼近了视觉上的线性效果。
+3. 恢复OpenGL的一些上下文状态。
+
+通过增加一次迭代的方式逼近视觉上线性效果，应用了数学上迭代逼近的理念。
+
+<img src="../img/cad/image-PPAA.png" alt="迭代逼近线性效果" width="500" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：迭代逼近线性效果</figcaption>
+
+!!! attention
+    + 注意上图为了示意效果将迭代的线宽设置为了原来的`2`倍，实际处理时设置一个更合适的倍数（如`1.2`倍）可以避免影响本来“线宽”的同时，达到逼近线性效果（模糊边缘）的目的；
+    + 需要进行效果的调整和测试来达到更好的抗锯齿效果，包括测试迭代时的线宽数据、颜色数据等。
+
+可以结合代码、视频课程进行熟悉和学习。
+
++ [课程文档教程](./00 about the course.md)
++ [课程详细代码](https://github.com/hashixuehua/GLViewer)
++ 课程视频讲解：[哔哩哔哩bilibili](https://www.bilibili.com/cheese/play/ss168681371)、[CSDN课堂](https://edu.csdn.net/course/detail/40091)
+
+!!! note "补充"
+    在`GLViewer`中我们实现了此种优化方式，并提供了设置面板进行控制，读者可自行体验不同设置下的效果差异。
+
+<img src="../img/cad/image-renderSetting.png" alt="GLViewer渲染设置" width="400" align="middle" style="display: block; margin-left: auto; margin-right: auto;"/>
+<figcaption style="text-align: center;">图：GLViewer渲染设置</figcaption>
+
+## 30.6.自定义抗锯齿算法
 我们可以自定义抗锯齿算法，如采用类似于图像处理的技术对渲染的图片进行效果处理，即`Post Processing AA`，然后再渲染出来。
 
 本文不对自定义抗锯齿算法进行深入探究，相信在了解了锯齿产生的原因以及`MSAA`背后的原理后能够有助于更深入的研究。
